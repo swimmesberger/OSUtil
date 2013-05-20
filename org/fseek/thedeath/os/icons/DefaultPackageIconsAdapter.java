@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.fseek.thedeath.os.icons;
 
 import org.fseek.thedeath.os.interfaces.IOSIcons;
