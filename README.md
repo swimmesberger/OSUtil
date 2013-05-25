@@ -12,6 +12,7 @@ OSUtil is powerful util package with many stuff for more native java application
 * FileSystemUtil - get- Desktop, Recent, Downloads, Image, Music, Documents, Videos, Home, ... folder system independed !
 * JavaVersionDetector - get the java version
 * Includes many icons for fallback if the system icon can't be retrieved (use at your own risk - check Copyright)
+* RecentFolder - Own implementation of a Windows like recent files folder for all OS which support Java 7
 
 ## Dependencies
 1. Java 7

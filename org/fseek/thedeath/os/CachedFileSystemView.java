@@ -10,11 +10,13 @@ import java.security.PrivilegedAction;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
 import org.fseek.thedeath.os.util.Debug;
 import org.fseek.thedeath.os.util.OSUtil;
+import org.fseek.thedeath.os.util.UtilBox;
 import sun.awt.shell.ShellFolder;
 
 
@@ -68,6 +70,13 @@ public abstract class CachedFileSystemView extends FileSystemView
         {
             return null;
         }
+        if(f instanceof VirtuaDirectory){
+            VirtuaDirectory vd = (VirtuaDirectory)f;
+            ImageIcon icon = vd.getIcon();
+            if(icon != null){
+                return icon;
+            }
+        }
         ShellFolder sf;
 
         try
@@ -120,7 +129,10 @@ public abstract class CachedFileSystemView extends FileSystemView
     public String getSystemDisplayName(File f)
     {
         String systemDisplayName = super.getSystemDisplayName(f);
-        if(systemDisplayName.length() <= 0){
+        if(systemDisplayName.length() > 10 && systemDisplayName.equals(f.getPath())){
+            systemDisplayName = null;
+        }
+        if(systemDisplayName == null || systemDisplayName.length() <= 0){
             systemDisplayName = f.getName();
             if(systemDisplayName.length() <= 0){
                 systemDisplayName = f.getAbsolutePath();
@@ -140,7 +152,9 @@ public abstract class CachedFileSystemView extends FileSystemView
         }else if(isDir == false && fileIcon != null){
             return fileIcon;
         }
-        ImageIcon icon = (ImageIcon)UIManager.getIcon(isDir ? "FileView.directoryIcon" : "FileView.fileIcon");
+        ImageIcon icon;
+        Icon tempic = UIManager.getIcon(isDir ? "FileView.directoryIcon" : "FileView.fileIcon");
+        icon = UtilBox.iconToImageIcon(tempic);
         if(icon == null){
            if(isDir){
                icon = getFolderIcon();

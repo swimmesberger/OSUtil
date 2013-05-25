@@ -27,6 +27,7 @@ public class WindowsUtils
             reader.join();
 
             String result = reader.getResult();
+            reader.close();
             int p = result.indexOf(REGSTR_TOKEN);
 
             if (p == -1)
@@ -73,5 +74,11 @@ public class WindowsUtils
         {
             return sw.toString();
         }
+        
+        public void close() throws IOException{
+            is.close();
+            sw.close();
+        }
+        
     }
 }

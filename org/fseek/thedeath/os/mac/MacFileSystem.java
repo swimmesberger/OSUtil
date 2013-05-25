@@ -2,56 +2,66 @@ package org.fseek.thedeath.os.mac;
 
 import java.io.File;
 import org.fseek.thedeath.os.DefaultFileSystem;
+import org.fseek.thedeath.os.DefaultRecentFolder;
 
 public class MacFileSystem extends DefaultFileSystem
 {
     @Override
     public File getDesktop()
     {
-        File file = new File(getHomeFolder(), "Desktop");
-        return file;
+        return get("Desktop");
     }
 
     @Override
     public File getRecentFolder()
     {
-        //does not exist on mac (?)
-        return null;
+        //does not exist on linux (?)
+        File cache = checkCache("RECENT");
+        if(cache != null){
+            return cache;
+        }
+        File addCache = addCache("RECENT", new DefaultRecentFolder());
+        return addCache;
     }
 
     @Override
     public File getDownloadsFolder()
     {
-        File file = new File(getHomeFolder(), "Downloads");
-        return file;
+        return get("Downloads");
     }
 
     @Override
     public File getImageFolder()
     {
-        File file = new File(getHomeFolder(), "Pictures");
-        return file;
+        return get("Pictures");
     }
 
     @Override
     public File getMusicFolder()
     {
-        File file = new File(getHomeFolder(), "Music");
-        return file;
+        return get("Music");
     }
 
     @Override
     public File getDocumentsFolder()
     {
-        File file = new File(getHomeFolder(), "Documents");
-        return file;
+        return get("Documents");
     }
 
     @Override
     public File getVideosFolder()
     {
-        File file = new File(getHomeFolder(), "Movies");
-        return file;
+        return get("Movies");
+    }
+    
+    private File get(String folderName){
+        //does not exist on linux (?)
+        File cache = checkCache(folderName);
+        if(cache != null){
+            return cache;
+        }
+        File addCache = addCache(folderName, new File(getHomeFolder(), folderName));
+        return addCache;
     }
     
 }

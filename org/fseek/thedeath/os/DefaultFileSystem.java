@@ -61,25 +61,40 @@ public abstract class DefaultFileSystem implements IFileSystem
     @Override
     public File getHomeFolder()
     {
-        return new File(System.getProperty("user.home"));
+        File checkCache = checkCache("user.home");
+        if(checkCache != null){
+            return checkCache;
+        }
+        File file = new File(System.getProperty("user.home"));
+        return addCache("user.home", file);
     }
 
     @Override
     public File getWorkingDirectory()
     {
-        return new File(System.getProperty("user.dir"));
+        File checkCache = checkCache("user.dir");
+        if(checkCache != null){
+            return checkCache;
+        }
+        return addCache("user.dir", new File(System.getProperty("user.dir")));
     }
 
     @Override
     public File getJarDirectory()
     {
+        File checkCache = checkCache("jar.dir");
+        if(checkCache != null){
+            return checkCache;
+        }
+        File f;
         if(JavaVersionDetector.isJava7()){
             Path currentRelativePath = Paths.get("");
             String s = currentRelativePath.toAbsolutePath().toString();
-            return new File(s);
+            f = new File(s);
         }else{
-            return getMainFile();
+            f = getMainFile();
         }
+        return addCache("jar.dir", f);
     }
     
     private File mainFile;

@@ -10,8 +10,8 @@ import java.io.PrintStream;
 
 public class Debug
 {
-    private static boolean DEBUG = true;
-    private static boolean SHOW_ERRORS = true;
+    private static boolean DEBUG = false;
+    private static boolean SHOW_ERRORS = false;
     
     private static PrintStream debugStream;
     private static PrintStream errorStream;
@@ -24,6 +24,14 @@ public class Debug
     public static void println(String s){
         if(DEBUG){
             debugStream.println(s);
+        }
+    }
+    
+    public static void println(String[] s){
+        if(DEBUG){
+            for(String str : s){
+                println(str);
+            }
         }
     }
     

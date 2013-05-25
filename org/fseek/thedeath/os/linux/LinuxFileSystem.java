@@ -1,5 +1,6 @@
 package org.fseek.thedeath.os.linux;
 
+import org.fseek.thedeath.os.DefaultRecentFolder;
 import java.io.File;
 import org.fseek.thedeath.os.DefaultFileSystem;
 
@@ -20,7 +21,12 @@ public class LinuxFileSystem extends DefaultFileSystem
     public File getRecentFolder()
     {
         //does not exist on linux (?)
-        return null;
+        File cache = checkCache("RECENT");
+        if(cache != null){
+            return cache;
+        }
+        File addCache = addCache("RECENT", new DefaultRecentFolder());
+        return addCache;
     }
 
     @Override

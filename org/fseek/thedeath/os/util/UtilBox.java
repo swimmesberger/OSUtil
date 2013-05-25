@@ -12,7 +12,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import javax.swing.AbstractButton;
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 
 public class UtilBox
 {
@@ -139,7 +143,7 @@ public class UtilBox
             }
         }
         BufferedImage scaledInstance = null;
-        if(systemIcon.getIconHeight() > height || systemIcon.getIconWidth() > width)
+        if(systemIcon.getIconHeight() != height || systemIcon.getIconWidth() != width)
         {
             BufferedImage img = UtilBox.imageToBufferedImage(systemIcon.getImage());
             scaledInstance = UtilBox.getScaledInstance(img, width, height, null, false);
@@ -215,5 +219,58 @@ public class UtilBox
             //something really strange happened
         }
         return mainPath;
+    }
+    
+    public static ImageIcon iconToImageIcon(Icon ui){
+        if(ui instanceof ImageIcon){
+            return (ImageIcon)ui;
+        }
+        BufferedImage img = new BufferedImage(ui.getIconWidth(), ui.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D createGraphics = img.createGraphics();
+        try {
+           ui.paintIcon(new JComponent() {}, createGraphics, 0, 0);
+        } catch (ClassCastException e) {
+           ui.paintIcon(createStandIn(e), createGraphics, 0, 0);
+        }
+        
+        return new ImageIcon(img);
+    }
+    
+    /**
+     * @param clazz
+     * @throws IllegalAccessException 
+     */
+    private static JComponent getSubstitute(Class<?> clazz) throws IllegalAccessException {
+        JComponent standInComponent;
+        try {
+            standInComponent = (JComponent) clazz.newInstance();
+        } catch (InstantiationException e) {
+            standInComponent = new AbstractButton() {
+
+            };
+            ((AbstractButton) standInComponent).setModel(new DefaultButtonModel());
+        } 
+        return standInComponent;
+    }
+    
+    /**
+     * @param e
+     */
+    private static JComponent createStandIn(ClassCastException e) {
+        try {
+            Class<?> clazz = getClass(e);
+            JComponent standInComponent = getSubstitute(clazz);
+            return standInComponent;
+        } catch (ClassNotFoundException | IllegalAccessException e1) {
+            // something went wrong - fallback to this paintin
+            Debug.printException(e1);
+        } 
+        return null;
+    }
+    
+    private static Class<?> getClass(ClassCastException e) throws ClassNotFoundException {
+        String className = e.getMessage();
+        className = className.substring(className.lastIndexOf(" ") + 1);
+        return Class.forName(className);
     }
 }
