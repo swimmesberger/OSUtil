@@ -1,7 +1,7 @@
 Java - OSUtil
 =========
 
-OSUtil is powerful util package with many stuff for more native java applications.
+OSUtil is a powerful util package with many stuff for more native java applications.
 
 ### Main features
 * Get system folder / file icons
@@ -20,7 +20,7 @@ OSUtil is powerful util package with many stuff for more native java application
 ### Setup
 1. Download the source
 2. Create a project
-3. Some warnings can appear on compile because this libary uses some internal proprietary classes
+3. Some warnings can appear on compile because this library uses some internal proprietary classes
 4. Done.
 
 ### Download
