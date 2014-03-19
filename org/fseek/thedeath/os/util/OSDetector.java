@@ -1,9 +1,32 @@
+/* 
+ * The MIT License
+ *
+ * Copyright 2014 Simon Wimmesberger.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package org.fseek.thedeath.os.util;
 
 import java.util.Locale;
 /**
  * Util class to detect the running operating system
- * @author Simon
+ * @author Simon Wimmesberger
  */
 @SuppressWarnings("unused")
 public class OSDetector {
@@ -80,15 +103,15 @@ public class OSDetector {
 
   public static boolean isWindows() {
     switch (OS_ID) {
-    case OS_WINDOWS_XP:
-    case OS_WINDOWS_VISTA:
-    case OS_WINDOWS_2000:
-    case OS_WINDOWS_2003:
-    case OS_WINDOWS_NT:
-    case OS_WINDOWS_8:
-    case OS_WINDOWS_7:
-    case OS_WINDOWS_OTHER:
-      return true;
+        case OS_WINDOWS_XP:
+        case OS_WINDOWS_VISTA:
+        case OS_WINDOWS_2000:
+        case OS_WINDOWS_2003:
+        case OS_WINDOWS_NT:
+        case OS_WINDOWS_8:
+        case OS_WINDOWS_7:
+        case OS_WINDOWS_OTHER:
+          return true;
     }
     return false;
   }

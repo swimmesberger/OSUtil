@@ -1,11 +1,25 @@
-/*
- * A own implementation of the recent file folder.
- * It crawls the home directory for files newer than 1 week
- * The subclass "FakeDirectory" fakes a normal file like /home/documents but only returns files which are newer than 1 week
- * 
- * If you want to get all files of a certain fake file simply call "getRealFile"
- * 
- * This class don't return EVERY file as it own it returns FakeDirectorys which contain every file newer than the timespan.
+/* 
+ * The MIT License
+ *
+ * Copyright 2014 Simon Wimmesberger.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 package org.fseek.thedeath.os;
 
@@ -30,7 +44,7 @@ import org.fseek.thedeath.os.util.OSUtil;
 
 /**
  *
- * @author Thedeath<www.fseek.org>
+ * @author Simon Wimmesberger
  */
 public class DefaultRecentFolder extends VirtuaDirectory
 {
