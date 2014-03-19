@@ -1,103 +1,117 @@
+/* 
+ * The MIT License
+ *
+ * Copyright 2014 Simon Wimmesberger.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package org.fseek.thedeath.os.linux;
 
-import org.fseek.thedeath.os.DefaultRecentFolder;
 import java.io.File;
 import org.fseek.thedeath.os.DefaultFileSystem;
 
 public class LinuxFileSystem extends DefaultFileSystem
 {
+    private static final LinuxUserDirectory userDirectoryHelper = new LinuxUserDirectoryHybrid();
+    
+    protected File getDownloadsFolderByTries(){
+        return get(LinuxUserDirectory.DOWNLOAD_DIR_KEY);
+    }
+    
+    protected File getRecentFolderByTries(){
+        return get(LinuxUserDirectory.RECENT_DIR_KEY);
+    }
+    
+    protected File getMusicFolderByTries(){
+        return get(LinuxUserDirectory.MUSIC_DIR_KEY);
+    }
+    
+    protected File getDocumentsFolderByTries(){
+        return get(LinuxUserDirectory.DOCUMENTS_DIR_KEY);
+    }
+    
+    protected File getVideosFolderByTries()
+    {
+        return get(LinuxUserDirectory.VIDEOS_DIR_KEY);
+    }
+    
+    protected File getDesktopFolderByTries(){
+        return get(LinuxUserDirectory.DESKTOP_DIR_KEY);
+    }
+    
+    protected File getImageFolderByTries(){
+        return get(LinuxUserDirectory.PICTURES_DIR_KEY);
+    }
+
     @Override
     public File getDesktop()
     {
-        String trys[] =
-        {
-            "Desktop"
-        };
-        return get(trys, "DESKTOP");
+        return get(LinuxUserDirectory.DESKTOP_DIR_KEY);
     }
     
-    // gets the folder where the last used files are located, works only on windows yet
+    /**
+     * Workaround on Linux with @see org.fseek.thedeath.os.DefaultRecentFolder
+     * @return Recent directory File
+     */
     @Override
     public File getRecentFolder()
     {
-        //does not exist on linux (?)
-        File cache = checkCache("RECENT");
-        if(cache != null){
-            return cache;
-        }
-        File addCache = addCache("RECENT", new DefaultRecentFolder());
-        return addCache;
+        return get(LinuxUserDirectory.RECENT_DIR_KEY);
     }
 
     @Override
     public File getDownloadsFolder()
     {
-        // trys to find the downloads folder on linux, also for the different languages
-        String trys[] =
-        {
-            "Downloads"
-        };
-        return get(trys, "DOWNLOADS");
+        return get(LinuxUserDirectory.DOWNLOAD_DIR_KEY);
     }
 
-    //TODO: mac support
     @Override
     public File getImageFolder()
     {
-        // trys to find the pictures folder on linux, also for the different languages
-        String trys[] =
-        {
-            "Pictures", "Bilder"
-        };
-        return get(trys, "PICTURES");
+        return get(LinuxUserDirectory.PICTURES_DIR_KEY);
     }
 
-    //TODO: mac support
     @Override
     public File getMusicFolder()
     {
-        String trys[] =
-        {
-            "Music", "Musik"
-        };
-        return get(trys, "MUSIC");
+        return get(LinuxUserDirectory.MUSIC_DIR_KEY);
     }
 
     @Override
     public File getDocumentsFolder()
     {
-        String trys[] =
-        {
-            "Documents", "Dokumente"
-        };
-        return get(trys, "DOCUMENTS");
+        return get(LinuxUserDirectory.DOCUMENTS_DIR_KEY);
     }
 
     @Override
     public File getVideosFolder()
     {
-        String trys[] =
-        {
-            "Videos"
-        };
-        return get(trys, "VIDEOS");
+        return get(LinuxUserDirectory.VIDEOS_DIR_KEY);
     }
     
-    private File get(String[] trys, String method){
-        File cache = checkCache(method);
+    private File get(String key){
+        File cache = checkCache(key);
         if(cache != null){
             return cache;
         }
-        File file = null;
-        for (String s : trys)
-        {
-            file = new File(getHomeFolder(), s);
-            if (file.exists())
-            {
-                return file;
-            }
-        }
-        addCache(method, file);
+        File file = userDirectoryHelper.getUserDirectory(key);
+        addCache(key, file);
         return file;
     }
 }
