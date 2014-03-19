@@ -23,17 +23,9 @@
  */
 package org.fseek.thedeath.os;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.fseek.thedeath.os.icons.DefaultFileIconsAdapter;
 import org.fseek.thedeath.os.icons.DefaultPackageIconsAdapter;
-import org.fseek.thedeath.os.icons.DefaultZipIconsAdapter;
 import org.fseek.thedeath.os.interfaces.IOSIcons;
 import org.fseek.thedeath.os.interfaces.IOSIconsAdapter;
-import org.fseek.thedeath.os.util.Debug;
 import org.fseek.thedeath.os.util.OSDetector;
 
 /**
@@ -42,17 +34,8 @@ import org.fseek.thedeath.os.util.OSDetector;
  */
 public class OSIconFactory
 {
-    private static IOSIconsAdapter DEFAULT;
-    
-    static{
-        try {
-            File iconDir = Paths.get("icons").toFile();
-            DEFAULT = new DefaultFileIconsAdapter(iconDir);
-        } catch (IOException ex) {
-            Debug.printException(ex);
-        }
-    }
-    
+    private static IOSIconsAdapter DEFAULT = new DefaultPackageIconsAdapter();
+       
     public static IOSIcons createOSIcons(){
         return createOSIcons(DEFAULT);
     }
