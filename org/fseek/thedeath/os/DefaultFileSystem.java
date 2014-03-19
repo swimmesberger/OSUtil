@@ -23,12 +23,16 @@
  */
 package org.fseek.thedeath.os;
 
-import org.fseek.thedeath.os.interfaces.IFileSystem;
 import java.io.File;
-import java.nio.file.Path;
+import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.fseek.thedeath.os.interfaces.IFileSystem;
+import org.fseek.thedeath.os.util.Debug;
 
 /**
  *
@@ -87,8 +91,52 @@ public abstract class DefaultFileSystem implements IFileSystem
         if(checkCache != null){
             return checkCache;
         }
-        Path currentRelativePath = Paths.get("");
-        String s = currentRelativePath.toAbsolutePath().toString();
-        return addCache("jar.dir", new File(s));
+        return addCache("jar.dir", getMainFile());
+    }
+    
+    public static Class<?> getCallerClassName() { 
+        StackTraceElement[] stElements = Thread.currentThread().getStackTrace();
+        for (int i=1; i<stElements.length; i++) {
+            StackTraceElement ste = stElements[i];
+            if (!ste.getClassName().equals(DefaultFileSystem.class.getName()) && ste.getClassName().indexOf("java.lang.Thread")!=0) {
+                try {
+                    return Class.forName(ste.getClassName());
+                } catch (ClassNotFoundException ex) {
+                    Debug.printException(ex);
+                }
+            }
+        }
+        return null;
+     }
+
+    public static File getMainFile()
+    {
+        try
+        {
+            Class<?> caller = getCallerClassName();
+            String path = caller.getProtectionDomain().getCodeSource().getLocation().getPath();
+            String decodedPath = URLDecoder.decode(path, "UTF-8");
+            File mainFileT = new File(decodedPath);
+            String absolutePath;
+            try
+            {
+                absolutePath = mainFileT.getCanonicalPath();
+                if (absolutePath.contains(".jar"))
+                {
+                    int index = absolutePath.lastIndexOf(File.separator);
+                    absolutePath = absolutePath.substring(0, index);
+                }
+                return new File(absolutePath);
+            }
+            catch (IOException ex)
+            {
+                Debug.printException(ex);
+            }
+        }
+        catch(Exception ex )
+        {
+            Debug.printException(ex);
+        }
+        return Paths.get("").toFile();
     }
 }

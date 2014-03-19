@@ -35,10 +35,11 @@ import org.fseek.thedeath.os.util.Debug;
  * @author Simon Wimmesberger
  */
 public class DefaultZipIconsAdapter implements IOSIconsAdapter{
-    private File zipFile;
-    public DefaultZipIconsAdapter(File iconsDirectory) throws IOException{
-        this(iconsDirectory, "default");
+    private final File zipFile;
+    public DefaultZipIconsAdapter(File zipFile) throws IOException{
+        this.zipFile = zipFile;
     }
+
     public DefaultZipIconsAdapter(File iconsDirectory, String iconPackName) throws IOException{
         this.zipFile = new File(iconsDirectory, iconPackName + "zip");
     }
