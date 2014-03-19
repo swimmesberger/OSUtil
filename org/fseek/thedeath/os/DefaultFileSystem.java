@@ -25,15 +25,10 @@ package org.fseek.thedeath.os;
 
 import org.fseek.thedeath.os.interfaces.IFileSystem;
 import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Locale;
-import org.fseek.thedeath.os.util.Debug;
-import org.fseek.thedeath.os.util.JavaVersionDetector;
 
 /**
  *
@@ -92,51 +87,8 @@ public abstract class DefaultFileSystem implements IFileSystem
         if(checkCache != null){
             return checkCache;
         }
-        File f;
-        if(JavaVersionDetector.isJava7()){
-            Path currentRelativePath = Paths.get("");
-            String s = currentRelativePath.toAbsolutePath().toString();
-            f = new File(s);
-        }else{
-            f = getMainFile();
-        }
-        return addCache("jar.dir", f);
-    }
-    
-    private File mainFile;
-    private File getMainFile()
-    {
-        if(mainFile != null)return mainFile;
-        try
-        {
-            String path = DefaultFileSystem.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            String decodedPath = URLDecoder.decode(path, "UTF-8");
-            File mainFileT = new File(decodedPath);
-            String absolutePath;
-            try
-            {
-                absolutePath = mainFileT.getCanonicalPath();
-                if (absolutePath.contains(".jar"))
-                {
-                    int index = absolutePath.lastIndexOf(File.separator);
-                    absolutePath = absolutePath.substring(0, index);
-                }
-                mainFile = new File(absolutePath);
-                return mainFile;
-            }
-            catch (IOException ex)
-            {
-                Debug.printException(ex);
-            }
-        } 
-        catch (UnsupportedEncodingException ex)
-        {
-            Debug.printException(ex);
-        }
-        catch(Exception ex)
-        {
-            Debug.printException(ex);
-        }
-        return new File(".");
+        Path currentRelativePath = Paths.get("");
+        String s = currentRelativePath.toAbsolutePath().toString();
+        return addCache("jar.dir", new File(s));
     }
 }
