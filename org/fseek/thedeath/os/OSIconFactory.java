@@ -46,7 +46,7 @@ public class OSIconFactory
     
     static{
         try {
-            File iconDir = Paths.get("C:\\Users\\Simon\\Documents\\GitHub\\OSUtil\\icons").toFile();
+            File iconDir = Paths.get("icons").toFile();
             DEFAULT = new DefaultFileIconsAdapter(iconDir);
         } catch (IOException ex) {
             Debug.printException(ex);
