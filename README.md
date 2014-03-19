@@ -24,4 +24,4 @@ OSUtil is a powerful util package with many stuff for more native java applicati
 4. Done.
 
 ### Download
-* Lib: https://github.com/Thedeath/OSUtil/releases/download/0.2.0/OSUti.jar
+* Lib: https://github.com/Thedeath/OSUtil/releases
