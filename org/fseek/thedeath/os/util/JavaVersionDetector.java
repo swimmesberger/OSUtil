@@ -31,8 +31,8 @@ import java.util.Locale;
  */
 public class JavaVersionDetector
 {
-
     public static final byte JAVA_OTHER = -1;
+    public static final byte JAVA_8 = 8;
     public static final byte JAVA_7 = 7;
     public static final byte JAVA_6 = 6;
     public static final byte JAVA_5 = 5;
@@ -41,7 +41,9 @@ public class JavaVersionDetector
     static
     {
         String version = System.getProperty("java.version").toLowerCase(Locale.getDefault());
-        if (version.startsWith("1.7"))
+        if(version.startsWith("1.8")){
+            JAVA_ID = JAVA_8;
+        } else if (version.startsWith("1.7"))
         {
             JAVA_ID = JAVA_7;
         } else if (version.startsWith("1.6"))
@@ -54,6 +56,10 @@ public class JavaVersionDetector
         {
             JAVA_ID = JAVA_OTHER;
         }
+    }
+    
+    public static boolean isJava8(){
+        return JAVA_ID == JAVA_8;
     }
 
     public static boolean isJava7()
