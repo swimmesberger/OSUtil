@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2014 Simon Wimmesberger.
@@ -21,10 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
 package org.fseek.thedeath.os.icons;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -32,56 +35,50 @@ import javax.swing.ImageIcon;
  *
  * @author Simon Wimmesberger
  */
-public class FileIcons extends DefaultOSIcons
-{
-    private File dir;
-    private String subdir;
+public class ZipIcons extends DefaultOSIcons{
+    private ZipFile zipFile;
+    private String directory;
     private String defaultDir;
-    public FileIcons(File directory){
-        this(directory, "");
+    public ZipIcons(File zipFile) throws IOException{
+        this(zipFile, null);
     }
     
-    public FileIcons(File directory, String subdir){
-         this(directory, subdir, "def");
+    public ZipIcons(ZipFile zipFile) throws IOException{
+        this(zipFile, null);
     }
     
-    public FileIcons(File directory, String subdir, String defaultDir){
-        if(directory.isDirectory() == false){
-            throw new IllegalArgumentException("The passed file isn't a directory!");
-        }
-        if(subdir.endsWith(File.separator) == false){
-            subdir = subdir + File.separator;
-        }
-        if(defaultDir.endsWith(File.separator) == false){
-            defaultDir = defaultDir + File.separator;
-        }
-        this.subdir = subdir;
-        this.dir = directory;
+    public ZipIcons(File zipFile, String directory) throws IOException{
+        this(zipFile, directory, "def");
+    }
+    
+    public ZipIcons(ZipFile zipFile, String directory) throws IOException{
+        this(zipFile, directory, "def");
+    }
+    
+    public ZipIcons(File zipFile, String directory, String defaultDir) throws IOException{
+        this.zipFile = new ZipFile(zipFile);
+        this.directory = directory;
+        this.defaultDir = defaultDir;
+    }
+    
+    public ZipIcons(ZipFile zipFile, String directory, String defaultDir) throws IOException{
+        this.zipFile = zipFile;
+        this.directory = directory;
         this.defaultDir = defaultDir;
     }
     
     @Override
-    public ImageIcon getIconByName(String name) throws IOException
-    {
+    public ImageIcon getIconByName(String name) throws IOException {
         ImageIcon cacheIcon = getFromCache(name);
         if(cacheIcon == null){
-            cacheIcon = getIconByNameImpl(name);
+            ZipEntry entry = zipFile.getEntry(directory + "/" + name);
+            if(entry == null){
+                entry = zipFile.getEntry(defaultDir + "/" + name);
+            }
+            cacheIcon = new ImageIcon(ImageIO.read(zipFile.getInputStream(entry)));
             addToCache(name, cacheIcon);
         }
         return cacheIcon;
-    }
-    
-    private ImageIcon getIconByNameImpl(String name) throws IOException{
-        ImageIcon ic = getIconByNameImpl(name, subdir);
-        if(ic == null){
-            ic = getIconByNameImpl(name, defaultDir);
-        }
-        return ic;
-    }
-    
-    private ImageIcon getIconByNameImpl(String name, String dir) throws IOException{
-        File f = new File(this.dir, dir + name);
-        if(f.canRead() == false)return null;
-        return new ImageIcon(ImageIO.read(f));
+
     }
 }

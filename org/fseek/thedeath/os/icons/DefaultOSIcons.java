@@ -68,9 +68,9 @@ public abstract class DefaultOSIcons implements IOSIcons
     }
 
     @Override
-    public ImageIcon getLibaryIcon()
+    public ImageIcon getLibraryIcon()
     {
-        return this.getIconByNameQuiet("bibliothek.png");
+        return this.getIconByNameQuiet("library.png");
     }
 
     @Override

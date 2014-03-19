@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2014 Simon Wimmesberger.
@@ -21,58 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fseek.thedeath.os;
+
+package org.fseek.thedeath.os.icons;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.fseek.thedeath.os.icons.DefaultFileIconsAdapter;
-import org.fseek.thedeath.os.icons.DefaultPackageIconsAdapter;
-import org.fseek.thedeath.os.icons.DefaultZipIconsAdapter;
+import java.io.InputStream;
+import javax.swing.ImageIcon;
 import org.fseek.thedeath.os.interfaces.IOSIcons;
 import org.fseek.thedeath.os.interfaces.IOSIconsAdapter;
-import org.fseek.thedeath.os.util.Debug;
-import org.fseek.thedeath.os.util.OSDetector;
 
 /**
  *
  * @author Simon Wimmesberger
  */
-public class OSIconFactory
-{
-    private static IOSIconsAdapter DEFAULT;
-    
-    static{
-        try {
-            File iconDir = Paths.get("C:\\Users\\Simon\\Documents\\GitHub\\OSUtil\\icons").toFile();
-            DEFAULT = new DefaultFileIconsAdapter(iconDir);
-        } catch (IOException ex) {
-            Debug.printException(ex);
-        }
+public class DefaultFileIconsAdapter implements IOSIconsAdapter{
+    private File file;
+    private String defaultDir;
+    public DefaultFileIconsAdapter(File iconsDirectory) throws IOException{
+        this.file = iconsDirectory;
     }
     
-    public static IOSIcons createOSIcons(){
-        return createOSIcons(DEFAULT);
+    private IOSIcons get(String dir){
+        return new FileIcons(file, dir);
     }
     
-    public static IOSIcons createOSIcons(IOSIconsAdapter adapter)
-    {
-        IOSIcons osIcons;
-        if(OSDetector.isWindows()){
-            osIcons = adapter.getWindows();
-        }else if(OSDetector.isMac()){
-            osIcons = adapter.getMac();
-        }
-        else{
-            osIcons = adapter.getLinux();
-        }
-        return osIcons;
+    @Override
+    public IOSIcons getWindows() {
+        return get("windows");
     }
 
-    public static IOSIconsAdapter getDefaultAdapter()
-    {
-        return DEFAULT;
+    @Override
+    public IOSIcons getMac() {
+        return get("mac");
+    }
+
+    @Override
+    public IOSIcons getLinux() {
+        return get("linux");
     }
 }

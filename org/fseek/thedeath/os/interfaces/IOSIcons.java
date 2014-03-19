@@ -34,7 +34,7 @@ public interface IOSIcons
     public ImageIcon getCollapsedIcon();
     public ImageIcon getUncollapsedIcon();
     public ImageIcon getStarIcon();
-    public ImageIcon getLibaryIcon();
+    public ImageIcon getLibraryIcon();
     public ImageIcon getComputerIcon();
     public ImageIcon getPictureIcon();
     public ImageIcon getDocumentIcon();
