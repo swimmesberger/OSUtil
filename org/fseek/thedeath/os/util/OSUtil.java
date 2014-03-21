@@ -24,11 +24,17 @@
 package org.fseek.thedeath.os.util;
 
 import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.fseek.thedeath.os.OSColorFactory;
 import org.fseek.thedeath.os.OSIconFactory;
 import org.fseek.thedeath.os.interfaces.IOSColors;
@@ -39,92 +45,142 @@ import org.fseek.thedeath.os.interfaces.IOSIconsAdapter;
  *
  * @author Simon Wimmesberger
  */
-public class OSUtil
-{
+public class OSUtil {
+
     private static IOSColors osColors;
     private static IOSIcons osIcons;
-    static{
+
+    static {
         osColors = OSColorFactory.createOSColors();
         setOsIcons(OSIconFactory.getDefaultAdapter());
     }
 
-    public static IOSColors getOsColors()
-    {
+    public static IOSColors getOsColors() {
         return osColors;
     }
-    
-    public static void setOsIcons(IOSIconsAdapter adapter){
+
+    public static void setOsIcons(IOSIconsAdapter adapter) {
         osIcons = OSIconFactory.createOSIcons(adapter);
     }
-    
-    public static void setOsIcons(IOSIcons icons)
-    {
+
+    public static void setOsIcons(IOSIcons icons) {
         osIcons = icons;
     }
-    
-    public static void setOsColors(IOSColors colors){
+
+    public static void setOsColors(IOSColors colors) {
         osColors = colors;
     }
 
-    public static IOSIcons getOsIcons()
-    {
+    public static IOSIcons getOsIcons() {
         return osIcons;
     }
-    
-    public static void openURL(URL url)
-    {
-        if (!Desktop.isDesktopSupported())
-        {
+
+    public static void openURL(URL url) {
+        if (!Desktop.isDesktopSupported()) {
             throw new UnsupportedOperationException("Desktop is not supported (fatal)");
         }
 
         Desktop desktop = Desktop.getDesktop();
 
-        if (!desktop.isSupported(Desktop.Action.BROWSE))
-        {
+        if (!desktop.isSupported(Desktop.Action.BROWSE)) {
             throw new UnsupportedOperationException("Desktop doesn't support the browse action (fatal)");
         }
-        try
-        {
+        try {
             desktop.browse(url.toURI());
-        } catch (URISyntaxException | IOException e)
-        {
+        } catch (URISyntaxException | IOException e) {
             Debug.printException(e);
         }
     }
 
-    public static void openFile(File file)
-    {
-        if ((OSDetector.isWindows()) && (file.isFile()))
-        {
-            try
-            {
-                Runtime.getRuntime().exec("cmd /c \"" + file.getAbsolutePath() + "\"");
-            } catch (IOException e)
-            {
-                Debug.printException(e);
-            }
-            return;
+    public static boolean canOpenFile() {
+        if (!Desktop.isDesktopSupported()) {
+            return false;
         }
 
-        if (!Desktop.isDesktopSupported())
-        {
+        Desktop desktop = Desktop.getDesktop();
+
+        return desktop.isSupported(Desktop.Action.OPEN);
+    }
+
+    public static void openFile(File file) {
+        Debug.println("Opening file: " + file.getAbsolutePath());
+        if ((OSDetector.isWindows()) && (file.isFile())) {
+            int exitCode = runWindows(file);
+            if (exitCode == 0) {
+                //success
+                return;
+            } else {
+                Debug.println("Opening file: " + file.getAbsolutePath() + " failed with windows method. (fall back to default action)");
+            }
+        }
+
+        if (!Desktop.isDesktopSupported()) {
             throw new UnsupportedOperationException("Desktop is not supported (fatal)");
         }
 
         Desktop desktop = Desktop.getDesktop();
 
-        if (!desktop.isSupported(Desktop.Action.OPEN))
-        {
+        if (!desktop.isSupported(Desktop.Action.OPEN)) {
             throw new UnsupportedOperationException("Desktop doesn't support the OPEN action (fatal)");
         }
-        try
-        {
+        try {
             URI uri = file.getCanonicalFile().toURI();
             desktop.open(new File(uri));
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             Debug.printException(e);
+        }
+    }
+
+    private static int runWindows(File file) {
+        int exitCode = -1;
+        try {
+            ProcessBuilder ps = new ProcessBuilder("cmd.exe", "/c", file.getAbsolutePath());
+            ps.redirectErrorStream(true);
+            Process pr = ps.start();
+            
+            Worker worker = new Worker(pr);
+            worker.start();
+            try {
+                worker.join(100);
+                if (worker.exit == null) {
+                    exitCode = 0;
+                } else {
+                    exitCode = worker.exit;
+                }
+            } catch (InterruptedException ex) {
+                worker.interrupt();
+                Thread.currentThread().interrupt();
+                throw ex;
+            } finally {
+                pr.destroy();
+            }
+        } catch (IOException | InterruptedException ex) {
+            Debug.printException(ex);
+        }
+        return exitCode;
+    }
+
+    private static class Worker extends Thread {
+
+        private final Process process;
+        private Integer exit;
+
+        private Worker(Process process) {
+            this.process = process;
+        }
+
+        @Override
+        public void run() {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = in.readLine()) != null) {
+                    Debug.println("Process cmd.exe: " + line);
+                }
+                exit = process.waitFor();
+                Debug.println("Process cmd.exe exited with " + exit);
+            } catch (InterruptedException | IOException ignore) {
+                return;
+            }
         }
     }
 }
