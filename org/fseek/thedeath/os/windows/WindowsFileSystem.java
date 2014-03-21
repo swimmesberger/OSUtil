@@ -71,6 +71,22 @@ public class WindowsFileSystem extends DefaultFileSystem
         return get("My Video");
     }
     
+    public File getFavoritesFolder(){
+        return get("Favorites");
+    }
+    
+    public File getStartupFolder(){
+        return get("Startup");
+    }
+    
+    public File getStartMenuFolder(){
+        return get("Start Menu");
+    }
+    
+    public File getAppDataFolder(){
+        return get("AppData");
+    }
+    
     private File get(String method, String regKey){
         File cache = checkCache(method);
         if(cache != null){

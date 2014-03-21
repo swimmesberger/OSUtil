@@ -22,41 +22,62 @@
  * THE SOFTWARE.
  */
 
-package org.fseek.thedeath.os.icons;
+package org.fseek.thedeath.os.windows;
 
 import java.io.File;
-import java.io.IOException;
-import org.fseek.thedeath.os.interfaces.IOSIcons;
-import org.fseek.thedeath.os.interfaces.IOSIconsAdapter;
-import org.fseek.thedeath.os.windows.WindowsFileIcons;
+import javax.swing.ImageIcon;
+import org.fseek.thedeath.os.icons.FileIcons;
 
 /**
  *
  * @author Simon Wimmesberger
  */
-public class DefaultFileIconsAdapter implements IOSIconsAdapter{
-    private File file;
-    private String defaultDir;
-    public DefaultFileIconsAdapter(File iconsDirectory) throws IOException{
-        this.file = iconsDirectory;
-    }
-    
-    private IOSIcons get(String dir){
-        return new FileIcons(file, dir);
+public class WindowsFileIcons extends FileIcons{
+    public WindowsFileIcons(File directory){
+         super(directory, "windows", "def");
     }
     
     @Override
-    public IOSIcons getWindows() {
-        return new WindowsFileIcons(file);
+    public ImageIcon getPictureIcon() {
+        return get(WindowsIconsHelper.IMAGE_FOLDER);
     }
 
     @Override
-    public IOSIcons getMac() {
-        return get("mac");
+    public ImageIcon getMusicIcon() {
+        return get(WindowsIconsHelper.MUSIC_FOLDER);
     }
 
     @Override
-    public IOSIcons getLinux() {
-        return get("linux");
+    public ImageIcon getDocumentIcon() {
+        return get(WindowsIconsHelper.DOCUMENT_FOLDER);
+    }
+
+    @Override
+    public ImageIcon getVideoIcon() {
+        return get(WindowsIconsHelper.VIDEO_FOLDER);
+    }
+    
+    @Override
+    public ImageIcon getRecentIcon() {
+        return get(WindowsIconsHelper.RECENT_FOLDER);
+    }
+    
+    @Override
+    public ImageIcon getMainDriveIcon() {
+        return get(WindowsIconsHelper.PRIMARY_HARDDRIVE);
+    }
+
+    @Override
+    public ImageIcon getMainDriveIconSmall() {
+        return get(WindowsIconsHelper.PRIMARY_HARDDRIVE_SMALL);
+    }
+
+    private ImageIcon get(String name){
+        ImageIcon cacheIcon = getFromCache(name);
+        if(cacheIcon == null){
+            cacheIcon = WindowsIconsHelper.get(name);
+            addToCache(name, cacheIcon);
+        }
+        return cacheIcon;
     }
 }

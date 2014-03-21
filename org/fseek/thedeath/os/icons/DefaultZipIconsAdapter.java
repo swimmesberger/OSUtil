@@ -29,6 +29,7 @@ import java.io.IOException;
 import org.fseek.thedeath.os.interfaces.IOSIcons;
 import org.fseek.thedeath.os.interfaces.IOSIconsAdapter;
 import org.fseek.thedeath.os.util.Debug;
+import org.fseek.thedeath.os.windows.WindowsZipIcons;
 
 /**
  *
@@ -55,7 +56,12 @@ public class DefaultZipIconsAdapter implements IOSIconsAdapter{
     
     @Override
     public IOSIcons getWindows() {
-        return get("windows");
+        try {
+            return new WindowsZipIcons(zipFile);
+        } catch (IOException ex) {
+            Debug.printException(ex);
+        }
+        return null;
     }
 
     @Override

@@ -25,6 +25,7 @@ package org.fseek.thedeath.os.icons;
 
 import org.fseek.thedeath.os.interfaces.IOSIcons;
 import org.fseek.thedeath.os.interfaces.IOSIconsAdapter;
+import org.fseek.thedeath.os.windows.WindowsPackageIcons;
 
 /**
  *
@@ -35,7 +36,7 @@ public class DefaultPackageIconsAdapter implements IOSIconsAdapter
     @Override
     public IOSIcons getWindows()
     {
-        return new PackageIcons(this.getClass(), "windows", "def");
+        return new WindowsPackageIcons(this.getClass(), "def");
     }
 
     @Override
