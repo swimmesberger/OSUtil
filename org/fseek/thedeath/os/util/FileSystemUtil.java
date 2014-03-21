@@ -25,8 +25,8 @@ package org.fseek.thedeath.os.util;
 
 import java.io.File;
 import java.io.IOException;
-import org.fseek.thedeath.os.interfaces.IFileSystem;
 import org.fseek.thedeath.os.OSFileSystemFactory;
+import org.fseek.thedeath.os.interfaces.IFileSystem;
 
 /**
  *
@@ -47,12 +47,45 @@ public class FileSystemUtil
         return fileSystem;
     }
     
+    public static File getMainDrive(){
+        if(OSDetector.isUnix()){
+            return new File("/");
+        }
+        File[] roots = File.listRoots();
+        for (File root : roots) {
+            if (isMainDrive(root)) {
+                return root;
+            }
+        }
+        return null;
+    }
+    
     public static boolean isMainDrive(File f){
+        String filePath;
+        try {
+            filePath = f.getCanonicalPath();
+        } catch (IOException ex) {
+            filePath = f.toString();
+        }
         if(mainDrive == null)
         {
-            mainDrive = new File(getDriveBegin(getFileSystem().getHomeFolder()));
+            String sysDrive = System.getenv("SystemDrive");
+            if(sysDrive != null){
+                if(sysDrive.endsWith(File.separator) == false){
+                    sysDrive = sysDrive + File.separator;
+                }
+                mainDrive = new File(sysDrive);
+            }else{
+                mainDrive = new File(getDriveBegin(getFileSystem().getHomeFolder()));
+            }
         }
-        if(f.getAbsolutePath().equals(mainDrive.getAbsolutePath()))
+        String mainPath;
+        try {
+            mainPath = mainDrive.getCanonicalPath();
+        } catch (IOException ex) {
+            mainPath = mainDrive.toString();
+        }
+        if(filePath.equals(mainPath))
         {
             return true;
         }
@@ -61,16 +94,18 @@ public class FileSystemUtil
     
     public static String getDriveBegin(File f)
     {
-        try
-        {
-            String canonicalPath = f.getCanonicalPath();
-            int index = canonicalPath.indexOf(File.separator);
-            String s = canonicalPath.substring(0, index);
-            return s;
-        } catch (IOException ex)
-        {
-            System.out.println(ex);
+        try {
+            return getDriveBegin(f.getCanonicalPath());
+        } catch (IOException ex) {
+            Debug.printException(ex);
         }
         return null;
+    }
+    
+    public static String getDriveBegin(String canonicalPath)
+    {
+        int index = canonicalPath.indexOf(File.separator);
+        String s = canonicalPath.substring(0, index);
+        return s;
     }
 }
