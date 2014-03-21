@@ -29,8 +29,6 @@ import java.net.URLDecoder;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.fseek.thedeath.os.interfaces.IFileSystem;
 import org.fseek.thedeath.os.util.Debug;
 

@@ -27,16 +27,14 @@ import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.fseek.thedeath.os.CachedFileSystemView;
 import org.fseek.thedeath.os.OSColorFactory;
 import org.fseek.thedeath.os.OSIconFactory;
+import org.fseek.thedeath.os.interfaces.IFileSystem;
 import org.fseek.thedeath.os.interfaces.IOSColors;
 import org.fseek.thedeath.os.interfaces.IOSIcons;
 import org.fseek.thedeath.os.interfaces.IOSIconsAdapter;
@@ -73,6 +71,14 @@ public class OSUtil {
 
     public static IOSIcons getOsIcons() {
         return osIcons;
+    }
+    
+    public static CachedFileSystemView getFileSystemView(){
+        return CachedFileSystemView.getFileSystemView();
+    }
+    
+    public static IFileSystem getFileSystem(){
+        return FileSystemUtil.getFileSystem();
     }
 
     public static void openURL(URL url) {
@@ -142,6 +148,7 @@ public class OSUtil {
             worker.start();
             try {
                 worker.join(100);
+                //if the program is still running after 100 milliseconds the start was successful
                 if (worker.exit == null) {
                     exitCode = 0;
                 } else {
