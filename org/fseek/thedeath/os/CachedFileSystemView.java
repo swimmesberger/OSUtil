@@ -159,7 +159,7 @@ public abstract class CachedFileSystemView extends FileSystemView
             }
         }
         if(systemDisplayName.length() > 10 && systemDisplayName.equals(f.getPath())){
-            systemDisplayName = null;
+            systemDisplayName = f.getName();
         }
         return systemDisplayName;
     }
