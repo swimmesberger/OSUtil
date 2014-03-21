@@ -43,7 +43,7 @@ import javax.swing.JComponent;
 
 public class UtilBox
 {
-    private static volatile HashMap<ImageIcon, ImageIcon> scaleCache;
+    protected static volatile HashMap<ImageIcon, ImageIcon> scaleCache;
     private static volatile File mainPath;
     /**
      * Convenience method that returns a scaled instance of the
