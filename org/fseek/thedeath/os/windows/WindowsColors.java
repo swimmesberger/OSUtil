@@ -37,6 +37,11 @@ public class WindowsColors implements IOSColors
     {
         return new Color(255,255,255);
     }
+    
+    @Override
+    public Color getTreePanelSelectionColor() {
+        return new Color(140,191,242);
+    }
 
     @Override
     public Color getTreeFontColor()

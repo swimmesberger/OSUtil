@@ -39,6 +39,11 @@ public class MacColors implements IOSColors
     }
 
     @Override
+    public Color getTreePanelSelectionColor() {
+        return new Color(140,191,242);
+    }
+    
+    @Override
     public Color getTreeFontColor()
     {
         return new Color(115,130,146);

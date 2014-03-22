@@ -32,6 +32,7 @@ import java.awt.Color;
 public interface IOSColors
 {
     public Color getTreePanelColor();
+    public Color getTreePanelSelectionColor();
     public Color getTreeFontColor();
     public boolean isTreeFontToUpperCase();
 }

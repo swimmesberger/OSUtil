@@ -28,7 +28,7 @@ import org.fseek.thedeath.os.windows.WindowsColors;
 /**
  *
  * @author Simon Wimmesberger
- * use windows colors for now
+ * TODO: Own colors -> use windows colors for now
  */
 public class LinuxColors extends WindowsColors
 {
