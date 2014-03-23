@@ -21,34 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fseek.thedeath.os;
+package org.fseek.thedeath.os.interfaces;
 
-import org.fseek.thedeath.os.util.OSDetector;
-import org.fseek.thedeath.os.interfaces.IOSColors;
-import org.fseek.thedeath.os.linux.LinuxColors;
-import org.fseek.thedeath.os.mac.MacColors;
-import org.fseek.thedeath.os.windows.WindowsColors;
+import java.awt.Color;
+import java.awt.Font;
 
 /**
  *
  * @author Simon Wimmesberger
  */
-public class OSColorFactory
+public interface IOSAppearance
 {
-    public static IOSColors createOSColors()
-    {
-        if (OSDetector.isWindows())
-        {
-            return new WindowsColors();
-        }
-        else if (OSDetector.isMac())
-        {
-            return new MacColors();
-        }
-        //default fileSystem
-        else
-        {
-            return new LinuxColors();
-        }
-    }
+    public Color getTreePanelColor();
+    public Color getTreePanelSelectionColor();
+    public Color getTreeFontColor();
+    public boolean isTreeFontToUpperCase();
+    public Font getFont();
+    public Color getFontColor();
+    public Color getLightFontColor();
 }

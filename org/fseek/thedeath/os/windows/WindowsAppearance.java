@@ -21,38 +21,52 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fseek.thedeath.os.mac;
+package org.fseek.thedeath.os.windows;
 
 import java.awt.Color;
-import org.fseek.thedeath.os.interfaces.IOSColors;
+import java.awt.Font;
+import org.fseek.thedeath.os.interfaces.IOSAppearance;
 
 /**
  *
  * @author Simon Wimmesberger
  */
-public class MacColors implements IOSColors
+public class WindowsAppearance implements IOSAppearance
 {
     @Override
     public Color getTreePanelColor()
     {
-        return new Color(222,228,234);
+        return new Color(255,255,255);
     }
-
+    
     @Override
     public Color getTreePanelSelectionColor() {
         return new Color(140,191,242);
     }
-    
+
     @Override
     public Color getTreeFontColor()
     {
-        return new Color(115,130,146);
+        return new Color(0,0,0);
+    }
+    
+    @Override
+    public boolean isTreeFontToUpperCase(){
+        return false;
     }
 
     @Override
-    public boolean isTreeFontToUpperCase()
-    {
-        return true;
+    public Font getFont() {
+        return new java.awt.Font("Segoe UI", 0, 11);
     }
     
+    @Override
+    public Color getFontColor(){
+       return new Color(30,50,135);
+    }
+    
+    @Override
+    public Color getLightFontColor(){
+        return new Color(76, 96, 145);
+    }
 }

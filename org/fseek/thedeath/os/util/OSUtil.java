@@ -32,10 +32,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import org.fseek.thedeath.os.CachedFileSystemView;
-import org.fseek.thedeath.os.OSColorFactory;
+import org.fseek.thedeath.os.OSAppearanceFactory;
 import org.fseek.thedeath.os.OSIconFactory;
 import org.fseek.thedeath.os.interfaces.IFileSystem;
-import org.fseek.thedeath.os.interfaces.IOSColors;
+import org.fseek.thedeath.os.interfaces.IOSAppearance;
 import org.fseek.thedeath.os.interfaces.IOSIcons;
 import org.fseek.thedeath.os.interfaces.IOSIconsAdapter;
 
@@ -45,15 +45,15 @@ import org.fseek.thedeath.os.interfaces.IOSIconsAdapter;
  */
 public class OSUtil {
 
-    private static IOSColors osColors;
+    private static IOSAppearance osColors;
     private static IOSIcons osIcons;
 
     static {
-        osColors = OSColorFactory.createOSColors();
+        osColors = OSAppearanceFactory.createOSColors();
         setOsIcons(OSIconFactory.getDefaultAdapter());
     }
 
-    public static IOSColors getOsColors() {
+    public static IOSAppearance getOSAppearance() {
         return osColors;
     }
 
@@ -65,7 +65,7 @@ public class OSUtil {
         osIcons = icons;
     }
 
-    public static void setOsColors(IOSColors colors) {
+    public static void setIOSAppearance(IOSAppearance colors) {
         osColors = colors;
     }
 

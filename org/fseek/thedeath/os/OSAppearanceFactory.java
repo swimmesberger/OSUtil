@@ -21,16 +21,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fseek.thedeath.os.linux;
+package org.fseek.thedeath.os;
 
-import org.fseek.thedeath.os.windows.WindowsColors;
+import org.fseek.thedeath.os.util.OSDetector;
+import org.fseek.thedeath.os.interfaces.IOSAppearance;
+import org.fseek.thedeath.os.linux.LinuxAppearance;
+import org.fseek.thedeath.os.mac.MacAppearance;
+import org.fseek.thedeath.os.windows.WindowsAppearance;
 
 /**
  *
  * @author Simon Wimmesberger
- * TODO: Own colors -> use windows colors for now
  */
-public class LinuxColors extends WindowsColors
+public class OSAppearanceFactory
 {
-    
+    public static IOSAppearance createOSColors()
+    {
+        if (OSDetector.isWindows())
+        {
+            return new WindowsAppearance();
+        }
+        else if (OSDetector.isMac())
+        {
+            return new MacAppearance();
+        }
+        //default fileSystem
+        else
+        {
+            return new LinuxAppearance();
+        }
+    }
 }

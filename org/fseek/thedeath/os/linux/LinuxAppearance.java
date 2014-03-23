@@ -21,36 +21,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fseek.thedeath.os.windows;
+package org.fseek.thedeath.os.linux;
 
-import java.awt.Color;
-import org.fseek.thedeath.os.interfaces.IOSColors;
+import java.awt.Font;
+import org.fseek.thedeath.os.windows.WindowsAppearance;
 
 /**
  *
  * @author Simon Wimmesberger
+ * TODO: Own colors -> use windows colors for now
  */
-public class WindowsColors implements IOSColors
-{
+public class LinuxAppearance extends WindowsAppearance
+{    
     @Override
-    public Color getTreePanelColor()
-    {
-        return new Color(255,255,255);
-    }
-    
-    @Override
-    public Color getTreePanelSelectionColor() {
-        return new Color(140,191,242);
-    }
-
-    @Override
-    public Color getTreeFontColor()
-    {
-        return new Color(0,0,0);
-    }
-    
-    @Override
-    public boolean isTreeFontToUpperCase(){
-        return false;
+    public Font getFont() {
+        return new Font("Ubuntu", Font.PLAIN, 11);
     }
 }
