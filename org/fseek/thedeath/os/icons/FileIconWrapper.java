@@ -32,7 +32,7 @@ import org.fseek.thedeath.os.util.OSUtil;
  *
  * @author Simon Wimmesberger
  */
-public class FileIconWrapper {
+public class FileIconWrapper implements Comparable<FileIconWrapper>{
     private File file;
     private ImageIcon imgIcon;
 
@@ -64,6 +64,10 @@ public class FileIconWrapper {
         this.imgIcon = icon;
     }
     
+    public void updateIcon(){
+        this.setIcon(getSystemIcon());
+    }
+    
     public ImageIcon getSystemIcon(boolean large){
         return OSUtil.getFileSystemView().getSystemIcon(this.getFile(), large);
     }
@@ -71,4 +75,30 @@ public class FileIconWrapper {
     public ImageIcon getSystemIcon(){
         return getSystemIcon(false);
     }
+
+    @Override
+    public String toString() {
+        return this.getFile().toString();
+    }
+ 
+    @Override
+    public int compareTo(FileIconWrapper o)
+    {
+        File f = o.getFile();
+        File thisF = this.getFile();
+        if(f.isDirectory() && thisF.isDirectory() == false)
+        {
+            return 1;
+        }
+        else if(f.isDirectory() == false && thisF.isDirectory())
+        {
+            return -1;
+        }
+        else
+        {
+            int compareTo = thisF.getName().compareToIgnoreCase(f.getName());
+            return compareTo;
+        }
+    }
+
 }
