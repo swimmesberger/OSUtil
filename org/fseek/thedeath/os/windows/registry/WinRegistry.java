@@ -132,7 +132,7 @@ public class WinRegistry {
         } catch (NoSuchMethodException | SecurityException e) {
         }
         try {
-            initNatvieRegistry();
+            initNativeRegistry();
         } catch (RegistryErrorException ex) {
             Debug.printException(ex);
         }
@@ -709,7 +709,7 @@ public class WinRegistry {
      * @todo test vista UAC
      * *******************************************************************************************************************************
      */
-    private static void initNatvieRegistry() throws RegistryErrorException {
+    private static void initNativeRegistry() throws RegistryErrorException {
         try {
             Runtime.getRuntime().exec("reg.exe"); //if no exception is thrown, then reg.exe was successfull
             nativeHandler = new RegHandler(); //reg.exe handler
