@@ -123,9 +123,7 @@ public class OSUtil {
         if (!Desktop.isDesktopSupported()) {
             throw new UnsupportedOperationException("Desktop is not supported (fatal)");
         }
-
         Desktop desktop = Desktop.getDesktop();
-
         if (!desktop.isSupported(Desktop.Action.OPEN)) {
             throw new UnsupportedOperationException("Desktop doesn't support the OPEN action (fatal)");
         }

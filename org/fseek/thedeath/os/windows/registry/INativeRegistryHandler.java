@@ -21,21 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.fseek.thedeath.os.windows;
+package org.fseek.thedeath.os.windows.registry;
 
-import org.fseek.thedeath.os.windows.registry.WinRegistry;
-import java.lang.reflect.InvocationTargetException;
+public interface INativeRegistryHandler {
 
-public class WindowsUtils
-{
-    private static final String DESKTOP_FOLDER_CMD = "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders";
+    boolean saveAnyValue(String path, String valueName, String type, String data) throws RegistryErrorException;
 
-    public static String getCurrentUserPath(String key)
-    {
-        try {
-          return WinRegistry.readString(WinRegistry.HKEY_CURRENT_USER, DESKTOP_FOLDER_CMD, key);
-        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-          return null;
-        }
-    }
+    String extractAnyValue(String path, String valueName, boolean appendType) throws RegistryErrorException;
+
 }
