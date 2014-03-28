@@ -291,12 +291,12 @@ public class UtilBox {
      * @param file File
      * *******************************************************************************************************************************
      */
-    public static void _waitForFile(File file) {
+    public static void waitForFile(File file) {
         try {
             long size = file.length();
             Thread.sleep(WAIT_FOR_FILE);
             if (size != file.length()) {
-                _waitForFile(file);
+                waitForFile(file);
             }
         } catch (Exception ex) {
             // something went wrong - fallback to this paintin

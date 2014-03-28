@@ -122,7 +122,7 @@ public class RegeditHandler implements INativeRegistryHandler {
             f = File.createTempFile("regorexp", ".jta"); //creates tmp File for storing the registry key
             //ATTENTION!! THESE COULD BE A DEADLOCK BECAUSE I WAITFOR THE END OF PROCESS HERE
             Runtime.getRuntime().exec("regedit /e " + f.getAbsolutePath() + " \"" + path + "\"").waitFor(); //<-- WAITING FOR END OF PROCESS
-            UtilBox._waitForFile(f); //wait until the file size is not increasing anymore
+            UtilBox.waitForFile(f); //wait until the file size is not increasing anymore
             br = new BufferedReader(new InputStreamReader(new FileInputStream(f)));
             String line = "";
             boolean lineFound = false;
