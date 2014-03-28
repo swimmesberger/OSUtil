@@ -31,10 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 import org.fseek.thedeath.os.util.Debug;
-import org.fseek.thedeath.os.windows.registry.INativeRegistryHandler;
-import org.fseek.thedeath.os.windows.registry.RegHandler;
-import org.fseek.thedeath.os.windows.registry.RegeditHandler;
-import org.fseek.thedeath.os.windows.registry.RegistryErrorException;
 
 @SuppressWarnings("all")
 public class WinRegistry {
@@ -290,7 +286,7 @@ public class WinRegistry {
     }
     
     private static String addHkey(int hkey, String key){
-        return key + "\\" + getAccessString(hkey);
+        return getAccessString(hkey) + "\\" + key;
     }
 
     /**
